@@ -1,4 +1,4 @@
- #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import urllib
 import httplib
@@ -20,8 +20,10 @@ logout_url = "/portal/logout.php"
 def print_result(content):
     if 'error' in content:
         dresq = eval(content.encode('utf-8'))
+        # decode utf-8 character
         print "Error:" + unicode(dresq["error"]).decode('unicode-escape')
     else:
+        #need to replace 'null' otherwise eval will return error
         dresq = eval(content.replace('null',"'w.seu.edu.cn'").encode('utf-8'))
         # print username & IP address
         print "username: " + username
@@ -30,22 +32,27 @@ def print_result(content):
 def login(username, password):
     global headers, login_url, url
     params ={'username': username, 'password':password}
-    conn = httplib.HTTPSConnection(url)
-    conn.request("POST", login_url,  urllib.urlencode(params), headers=headers)
-    content = conn.getresponse().read()
-    # remove useless header
-    content = content[5:]
-    print print_result(content)
-    conn.close()
-    
+    try:
+        conn = httplib.HTTPSConnection(url)
+        conn.request("POST", login_url,  urllib.urlencode(params), headers=headers)
+        content = conn.getresponse().read()
+        # remove useless header
+        content = content[5:]
+        print_result(content)
+        conn.close()
+    except:
+        print "Post error!"
 
-    # print "Login fail!!!"
 def logout():
     global headers, url, logout_url
-    conn = httplib.HTTPSConnection(url)
-    conn.request("POST",logout_url,headers=headers)
-    conn.close()
-    print "Logout Sucess!!"
+    try:
+        conn = httplib.HTTPSConnection(url)
+        conn.request("POST",logout_url,headers=headers)
+        conn.close()
+        print "Logout Sucess!!"
+    except:
+        print "Post error!"
+
 '''
 def login_basedon_request(username, password):
     "login code base on requests(lib), which need installation"
@@ -55,17 +62,13 @@ def login_basedon_request(username, password):
     params = {'username': username, 'password': password}
     resq = requests.post(URL, data=urllib.urlencode(params), allow_redirects=True, headers=headers)
     content = resq.text 
-    print print_result(content)
+    print_result(content)
 '''
+
 if __name__ == '__main__':
-        # login(username, password)
-    # logout()
-    # login_basedon_request(username, password)
-	
-    print sys.argv
     if sys.argv[1] == 'login':
         login(username, password)
     elif sys.argv[1] == 'logout':
         logout()
     else:
-		print "Usage python %s [login | logout | help]" % sys.argv[0]
+        print "Usage python %s [login | logout | help]" % sys.argv[0]
