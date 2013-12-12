@@ -5,6 +5,9 @@ import httplib
 import json
 import sys
 
+username = 'your_username'
+password = 'your_password'
+
 headers = {
     'Content-Type': "application/json; charset=utf-8",
     'dataType': "json",
@@ -43,7 +46,7 @@ def logout():
     conn.request("POST",logout_url,headers=headers)
     conn.close()
     print "Logout Sucess!!"
-
+'''
 def login_basedon_request(username, password):
     "login code base on requests(lib), which need installation"
     import requests
@@ -53,12 +56,9 @@ def login_basedon_request(username, password):
     resq = requests.post(URL, data=urllib.urlencode(params), allow_redirects=True, headers=headers)
     content = resq.text 
     print print_result(content)
-
+'''
 if __name__ == '__main__':
-    username = 'your_username'
-    password = 'your_password'
-
-    # login(username, password)
+        # login(username, password)
     # logout()
     # login_basedon_request(username, password)
 	
@@ -68,5 +68,4 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'logout':
         logout()
     else:
-        login_basedon_request(username,password)
-
+		print "Usage python %s [login | logout | help]" % sys.argv[0]
