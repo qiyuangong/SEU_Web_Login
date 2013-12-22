@@ -4,9 +4,10 @@ import urllib
 import httplib
 import json
 import sys
+import time
 
-username = 'your_username'
-password = 'your_password'
+username = 'yourname'
+password = 'yourpassword'
 
 headers = {
 	'Content-Type': "application/json; charset=utf-8",
@@ -17,6 +18,7 @@ url = "w.seu.edu.cn"
 init_url = "/portal/init.php"
 login_url = "/portal/login.php"
 logout_url = "/portal/logout.php"
+
 
 def print_result(content):
 	if 'error' in content:
@@ -29,7 +31,7 @@ def print_result(content):
 		# print username & IP address
 		print "username: " + username
 		print "IP Address: " + dresq['login_ip']
-		print "Login Time: " + dresq['login_time']
+		print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
 
 def login(username, password):
 	global headers, login_url, url
@@ -62,13 +64,10 @@ def status():
 		conn.request("GET", init_url, headers=headers)
 		content = conn.getresponse().read()
 		# remove useless header
-		content = content[5:]
+		content = content[3:]
 		print_result(content)
 	except:
 		print "Get Status error!"
-
-
-
 
 '''
 def login_basedon_request(username, password):
@@ -83,7 +82,10 @@ def login_basedon_request(username, password):
 '''
 
 if __name__ == '__main__':
-	if sys.argv[1] == 'login':
+
+	if len(sys.argv) <= 1:
+		print "Usage python %s [login | logout | help]" % sys.argv[0]
+	elif sys.argv[1] == 'login':
 		login(username, password)
 	elif sys.argv[1] == 'logout':
 		logout()
