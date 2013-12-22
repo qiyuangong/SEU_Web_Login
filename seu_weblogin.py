@@ -14,6 +14,7 @@ headers = {
 	'cache': False
 	}
 url = "w.seu.edu.cn"
+init_url = "/portal/init.php"
 login_url = "/portal/login.php"
 logout_url = "/portal/logout.php"
 
@@ -28,6 +29,7 @@ def print_result(content):
 		# print username & IP address
 		print "username: " + username
 		print "IP Address: " + dresq['login_ip']
+		print "Login Time: " + dresq['login_time']
 
 def login(username, password):
 	global headers, login_url, url
@@ -47,11 +49,26 @@ def logout():
 	global headers, url, logout_url
 	try:
 		conn = httplib.HTTPSConnection(url)
-		conn.request("POST",logout_url,headers=headers)
+		conn.request("POST", logout_url, headers=headers)
 		conn.close()
 		print "Logout Sucess!!"
 	except:
 		print "Post error!"
+
+def status():
+	global headers, url, index_url
+	try:
+		conn = httplib.HTTPSConnection(url)
+		conn.request("GET", init_url, headers=headers)
+		content = conn.getresponse().read()
+		# remove useless header
+		content = content[5:]
+		print_result(content)
+	except:
+		print "Get Status error!"
+
+
+
 
 '''
 def login_basedon_request(username, password):
@@ -70,5 +87,7 @@ if __name__ == '__main__':
 		login(username, password)
 	elif sys.argv[1] == 'logout':
 		logout()
+	elif sys.argv[1] == 'status':
+		status()
 	else:
 		print "Usage python %s [login | logout | help]" % sys.argv[0]
