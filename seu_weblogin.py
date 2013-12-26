@@ -6,8 +6,8 @@ import json
 import sys
 import time
 
-username = 'yourname'
-password = 'yourpassword'
+gl_username = 'yourname'
+gl_password = 'yourpassword'
 
 headers = {
 	'Content-Type': "application/json; charset=utf-8",
@@ -26,10 +26,11 @@ def print_result(content):
 		# decode utf-8 character
 		print "Error:" + unicode(dresq["error"]).decode('unicode-escape')
 	else:
+		#fuction eval will convert json to dict
 		#need to replace 'null' otherwise eval will return error
 		dresq = eval(content.replace('null',"'w.seu.edu.cn'").encode('utf-8'))
 		# print username & IP address
-		print "username: " + username
+		print "username: " + gl_username
 		print "IP Address: " + dresq['login_ip']
 		print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
 
@@ -39,6 +40,7 @@ def login(username, password):
 	try:
 		conn = httplib.HTTPSConnection(url)
 		conn.request("POST", login_url,  urllib.urlencode(params), headers=headers)
+		#get response from web server
 		content = conn.getresponse().read()
 		# remove useless header
 		content = content[5:]
@@ -62,8 +64,10 @@ def status():
 	try:
 		conn = httplib.HTTPSConnection(url)
 		conn.request("GET", init_url, headers=headers)
+		#get response from web server	
 		content = conn.getresponse().read()
 		# remove useless header
+		# Head here is different from login.
 		content = content[3:]
 		print_result(content)
 	except:
@@ -84,12 +88,14 @@ def login_basedon_request(username, password):
 if __name__ == '__main__':
 
 	if len(sys.argv) <= 1:
-		print "Usage python %s [login | logout | help]" % sys.argv[0]
+		print "No param is inputed. Please input params."
+		print "Usage python %s [login | logout | status | help]" % sys.argv[0]
 	elif sys.argv[1] == 'login':
-		login(username, password)
+		login(gl_username, gl_password)
 	elif sys.argv[1] == 'logout':
 		logout()
 	elif sys.argv[1] == 'status':
 		status()
 	else:
-		print "Usage python %s [login | logout | help]" % sys.argv[0]
+		print "Input param is not supported!"
+		print "Usage python %s [login | logout | status | help]" % sys.argv[0]
