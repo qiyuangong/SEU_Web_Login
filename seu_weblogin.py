@@ -19,7 +19,6 @@ init_url = "/portal/init.php"
 login_url = "/portal/login.php"
 logout_url = "/portal/logout.php"
 
-
 def print_result(content):
 	if 'error' in content:
 		dresq = eval(content.encode('utf-8'))
@@ -28,18 +27,19 @@ def print_result(content):
 	else:
 		#fuction eval will convert json to dict
 		#need to replace 'null' otherwise eval will return error
-		dresq = eval(content.replace('null',"'w.seu.edu.cn'").encode('utf-8'))
+		dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
 		# print username & IP address
 		print "username: " + gl_username
 		print "IP Address: " + dresq['login_ip']
 		print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
+		print "Login Location:" + dresq['login_location']
 
 def login(username, password):
 	global headers, login_url, url
-	params ={'username': username, 'password':password}
+	params ={'username': username, 'password': password}
 	try:
 		conn = httplib.HTTPSConnection(url)
-		conn.request("POST", login_url,  urllib.urlencode(params), headers=headers)
+		conn.request("POST", login_url, urllib.urlencode(params), headers=headers)
 		#get response from web server
 		content = conn.getresponse().read()
 		# remove useless header
