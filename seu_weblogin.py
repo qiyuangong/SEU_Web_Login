@@ -20,19 +20,22 @@ login_url = "/portal/login.php"
 logout_url = "/portal/logout.php"
 
 def print_result(content):
-	if 'error' in content:
-		dresq = eval(content.encode('utf-8'))
-		# decode utf-8 character
-		print "Error:" + unicode(dresq["error"]).decode('unicode-escape')
-	else:
-		#fuction eval will convert json to dict
-		#need to replace 'null' otherwise eval will return error
-		dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
-		# print username & IP address
-		print "username: " + gl_username
-		print "IP Address: " + dresq['login_ip']
-		print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
-		print "Login Location:" + dresq['login_location']
+	try:
+		if 'error' in content:
+			dresq = eval(content.encode('utf-8'))
+			# decode utf-8 character
+			print "Error:" + unicode(dresq["error"]).decode('unicode-escape')
+		else:
+			#fuction eval will convert json to dict
+			#need to replace 'null' otherwise eval will return error
+			dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
+			# print username & IP address
+			print "username: " + gl_username
+			print "IP Address: " + dresq['login_ip']
+			print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
+			print "Login Location:" + dresq['login_location']
+	except:
+		print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
 def login(username, password):
 	global headers, login_url, url
