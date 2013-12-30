@@ -6,8 +6,8 @@ import json
 import sys
 import time
 
-gl_username = 'yourname'
-gl_password = 'yourpassword'
+gl_username = 'your_username'
+gl_password = 'your_password'
 
 headers = {
 	'Content-Type': "application/json; charset=utf-8",
@@ -30,10 +30,10 @@ def print_result(content):
 			#need to replace 'null' otherwise eval will return error
 			dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
 			# print username & IP address
-			print "username: " + gl_username
+			print "Username: " + gl_username
 			print "IP Address: " + dresq['login_ip']
 			print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
-			print "Login Location:" + dresq['login_location']
+			print "Login Location: " + unicode(dresq['login_location']).decode('unicode-escape')
 	except:
 		print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
