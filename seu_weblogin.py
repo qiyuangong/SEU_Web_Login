@@ -38,7 +38,19 @@ def print_result(content):
 		print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
 def login(username, password):
-	global headers, login_url, url
+	global headers, login_url, url, init_url
+
+	conn = httplib.HTTPSConnection(url)
+	conn.request("GET", init_url, headers=headers)
+	#get response from web server	
+	content = conn.getresponse().read()
+	# make sure if user is login 
+	if not 'notlogin' in content:
+		print "Already login!"
+		content = content[3:]
+		print_result(content)
+		return
+
 	params ={'username': username, 'password': password}
 	try:
 		conn = httplib.HTTPSConnection(url)
@@ -69,6 +81,10 @@ def status():
 		conn.request("GET", init_url, headers=headers)
 		#get response from web server	
 		content = conn.getresponse().read()
+		# make sure if user is login 
+		if 'notlogin' in content:
+			print "Not login!"
+			return
 		# remove useless header
 		# Head here is different from login.
 		content = content[3:]
