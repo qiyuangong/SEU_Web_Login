@@ -20,6 +20,7 @@ login_url = "/portal/login.php"
 logout_url = "/portal/logout.php"
 
 def print_result(content):
+	'''Print response from server.'''
 	try:
 		if 'error' in content:
 			dresq = eval(content.encode('utf-8'))
@@ -38,6 +39,7 @@ def print_result(content):
 		print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
 def login(username, password):
+	'''Login fuction based on httplib. "POST" your login parameters to server.'''
 	global headers, login_url, url, init_url
 
 	conn = httplib.HTTPSConnection(url)
@@ -65,6 +67,7 @@ def login(username, password):
 		print "Post error!"
 
 def logout():
+	'''Logout based on httplib. "POST" logout parameters to server.'''
 	global headers, url, logout_url
 	try:
 		conn = httplib.HTTPSConnection(url)
@@ -75,6 +78,7 @@ def logout():
 		print "Post error!"
 
 def status():
+	'''Print login status (IP, time, location). If not login, print "Not login!"'''
 	global headers, url, index_url
 	try:
 		conn = httplib.HTTPSConnection(url)
