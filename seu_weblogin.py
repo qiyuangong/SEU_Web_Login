@@ -9,15 +9,15 @@ import time
 gl_username = 'your_username'
 gl_password = 'your_password'
 
-headers = {
+gl_headers = {
     'Content-Type': "application/json; charset=utf-8",
     'dataType': "json",
     'cache': False
     }
-url = "w.seu.edu.cn"
-init_url = "/portal/init.php"
-login_url = "/portal/login.php"
-logout_url = "/portal/logout.php"
+gl_url = "w.seu.edu.cn"
+gl_init_url = "/portal/init.php"
+gl_login_url = "/portal/login.php"
+gl_logout_url = "/portal/logout.php"
 
 def print_result(content):
     '''Print response from server.'''
@@ -36,14 +36,14 @@ def print_result(content):
             print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
             print "Login Location: " + unicode(dresq['login_location']).decode('unicode-escape')
     except:
-        print "Print error! Maybe something is wrong in UTF-7 encode and json decode"
+        print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
 def login(username, password):
     '''Login fuction based on httplib. "POST" your login parameters to server.'''
-    global headers, login_url, url, init_url
+    global gl_headers, gl_login_url, gl_url, gl_init_url
 
-    conn = httplib.HTTPSConnection(url)
-    conn.request("GET", init_url, headers=headers)
+    conn = httplib.HTTPSConnection(gl_url)
+    conn.request("GET", gl_init_url, headers=gl_headers)
     #get response from web server   
     content = conn.getresponse().read()
     # make sure if user is login 
@@ -55,8 +55,8 @@ def login(username, password):
 
     params ={'username': username, 'password': password}
     try:
-        conn = httplib.HTTPSConnection(url)
-        conn.request("POST", login_url, urllib.urlencode(params), headers=headers)
+        conn = httplib.HTTPSConnection(gl_url)
+        conn.request("POST", gl_login_url, urllib.urlencode(params), headers=gl_headers)
         #get response from web server
         content = conn.getresponse().read()
         # remove useless header
@@ -68,10 +68,10 @@ def login(username, password):
 
 def logout():
     '''Logout based on httplib. "POST" logout parameters to server.'''
-    global headers, url, logout_url
+    global gl_headers, gl_url, gl_logout_url
     try:
-        conn = httplib.HTTPSConnection(url)
-        conn.request("POST", logout_url, headers=headers)
+        conn = httplib.HTTPSConnection(gl_url)
+        conn.request("POST", gl_logout_url, headers=gl_headers)
         conn.close()
         print "Logout Sucess!!"
     except:
@@ -79,10 +79,10 @@ def logout():
 
 def status():
     '''Print login status (IP, time, location). If not login, print "Not login!"'''
-    global headers, url, index_url
+    global gl_headers, gl_url, gl_init_url
     try:
-        conn = httplib.HTTPSConnection(url)
-        conn.request("GET", init_url, headers=headers)
+        conn = httplib.HTTPSConnection(gl_url)
+        conn.request("GET", gl_init_url, headers=gl_headers)
         #get response from web server   
         content = conn.getresponse().read()
         # make sure if user is login 
