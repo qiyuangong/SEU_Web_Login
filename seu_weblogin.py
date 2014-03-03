@@ -6,9 +6,9 @@ import json
 import sys
 import time
 
+
 gl_username = 'your_username'
 gl_password = 'your_password'
-
 gl_headers = {
     'Content-Type': "application/json; charset=utf-8",
     'dataType': "json",
@@ -19,8 +19,11 @@ gl_init_url = "/portal/init.php"
 gl_login_url = "/portal/login.php"
 gl_logout_url = "/portal/logout.php"
 
+
 def print_result(content):
-    '''Print response from server.'''
+    """Print response from server.
+    Print Username, IP address, Login Time, Login Location
+    """
     try:
         if 'error' in content:
             dresq = eval(content.encode('utf-8'))
@@ -38,8 +41,12 @@ def print_result(content):
     except:
         print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
+
 def login(username, password):
-    '''Login fuction based on httplib. "POST" your login parameters to server.'''
+    """Login fuction based on httplib. 
+    Check login status, if logined then print status (IP, time, location).
+    If not logined, 'POST' your login parameters to server.
+    """
     global gl_headers, gl_login_url, gl_url, gl_init_url
 
     conn = httplib.HTTPSConnection(gl_url)
@@ -52,6 +59,7 @@ def login(username, password):
         content = content[3:]
         print_result(content)
         return
+
 
     params ={'username': username, 'password': password}
     try:
@@ -66,8 +74,11 @@ def login(username, password):
     except:
         print "Post error!"
 
+
 def logout():
-    '''Logout based on httplib. "POST" logout parameters to server.'''
+    """Logout based on httplib. 
+    'POST' logout parameters to server.
+    """
     global gl_headers, gl_url, gl_logout_url
     try:
         conn = httplib.HTTPSConnection(gl_url)
@@ -77,8 +88,12 @@ def logout():
     except:
         print "Post error!"
 
+
 def status():
-    '''Print login status (IP, time, location). If not login, print "Not login!"'''
+    """Print login status.
+    If logined, print status (IP, time, location). 
+    If not logined, print 'Not login!'
+    """
     global gl_headers, gl_url, gl_init_url
     try:
         conn = httplib.HTTPSConnection(gl_url)
@@ -89,24 +104,12 @@ def status():
         if 'notlogin' in content:
             print "Not login!"
             return
-        # remove useless header
-        # Head here is different from login.
+        # remove useless header, http header here is different from login.
         content = content[3:]
         print_result(content)
     except:
         print "Get Status error!"
 
-'''
-def login_basedon_request(username, password):
-    "login code base on requests(lib), which need installation"
-    import requests
-    URL = 'https://w.seu.edu.cn/portal/login.php'
-    # params = {'username': unicode(username).encode('utf-8'), 'password': unicode(password).encode('utf-8')}
-    params = {'username': username, 'password': password}
-    resq = requests.post(URL, data=urllib.urlencode(params), allow_redirects=True, headers=headers)
-    content = resq.text 
-    print_result(content)
-'''
 
 if __name__ == '__main__':
 
