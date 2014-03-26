@@ -34,7 +34,7 @@ def print_result(content):
             #need to replace 'null' otherwise eval will return error
             dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
             # print username & IP address
-            print "Username: " + gl_username
+            print "Username: " + dresq['login_username']
             print "IP Address: " + dresq['login_ip']
             print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
             print "Login Location: " + unicode(dresq['login_location']).decode('unicode-escape')
@@ -112,11 +112,16 @@ def status():
 
 
 if __name__ == '__main__':
-
+    global gl_username, gl_password
     if len(sys.argv) <= 1:
         print "No param is inputed. Please input params."
         print "Usage python %s [login | logout | status | help]" % sys.argv[0]
     elif sys.argv[1] == 'login':
+        # if you didn't write username and password in this file
+        # you can input username and password by standard input
+        if 'your' in gl_username or 'your' in gl_password:
+           gl_username = raw_input("Username:")
+           gl_password = raw_input("Password:")
         login(gl_username, gl_password)
     elif sys.argv[1] == 'logout':
         logout()
