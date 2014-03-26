@@ -7,9 +7,8 @@ This program is a python implement for CLI (command-line interface) web login in
 
 ## Usage:
 	
-You need to fill your username and password first. 
-
-使用前，请替换用户名和密码：
+You need to fill your username and password first, otherwise you need to input thme in std input (recommanded for public server). 
+使用前，请替换用户名和密码（如不替换，程序会在运行时要求你输入）：
 
 	# replace with your username and password
 	gl_username = 'your_username' 

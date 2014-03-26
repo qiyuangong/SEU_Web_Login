@@ -60,7 +60,6 @@ def login(username, password):
         print_result(content)
         return
 
-
     params ={'username': username, 'password': password}
     try:
         conn = httplib.HTTPSConnection(gl_url)
@@ -116,7 +115,7 @@ if __name__ == '__main__':
         print "No param is inputed. Please input params."
         print "Usage python %s [login | logout | status | help]" % sys.argv[0]
     elif sys.argv[1] == 'login':
-        # if you didn't write username and password in this file
+        # if you didn't want to save username and password in this file
         # you can input username and password by standard input
         if 'your' in gl_username or 'your' in gl_password:
            gl_username = raw_input("Username:")
