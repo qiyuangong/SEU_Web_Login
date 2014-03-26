@@ -5,7 +5,7 @@ import httplib
 import json
 import sys
 import time
-
+import getpass
 
 gl_username = 'your_username'
 gl_password = 'your_password'
@@ -112,7 +112,6 @@ def status():
 
 
 if __name__ == '__main__':
-    global gl_username, gl_password
     if len(sys.argv) <= 1:
         print "No param is inputed. Please input params."
         print "Usage python %s [login | logout | status | help]" % sys.argv[0]
@@ -121,7 +120,8 @@ if __name__ == '__main__':
         # you can input username and password by standard input
         if 'your' in gl_username or 'your' in gl_password:
            gl_username = raw_input("Username:")
-           gl_password = raw_input("Password:")
+           # don't show my password on screen
+           gl_password = getpass.getpass("Password:")
         login(gl_username, gl_password)
     elif sys.argv[1] == 'logout':
         logout()
