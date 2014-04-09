@@ -38,6 +38,8 @@ def print_result(content):
             print "IP Address: " + dresq['login_ip']
             print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
             print "Login Location: " + unicode(dresq['login_location']).decode('unicode-escape')
+            print "Expire Time: " + unicode(dresq['login_expire']).decode('unicode-escape') + \
+                    ' (remain ' + unicode(dresq['login_remain']).decode('unicode-escape') + ' days)'
     except:
         print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 

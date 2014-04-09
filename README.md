@@ -8,6 +8,7 @@ This program is a python implement for CLI (command-line interface) web login in
 ## Usage:
 	
 You need to fill your username and password first, otherwise you need to input thme in std input (recommanded for public server). 
+
 使用前，请替换用户名和密码（如不替换，程序会在运行时要求你输入）：
 
 	# replace with your username and password
@@ -27,7 +28,7 @@ Then just excute it with params.
 	Logout by https.
 
 	-status:
-	Print login time, login location and login ip address. Time format 12:12:12(h:m:s).
+	Print login time, expire time, login location and login ip address. Time format 12:12:12(h:m:s).
 
 	-help:
 	Print usage.
