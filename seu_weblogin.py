@@ -49,8 +49,6 @@ def login(username, password):
     Check login status, if logined then print status (IP, time, location).
     If not logined, 'POST' your login parameters to server.
     """
-    global gl_headers, gl_login_url, gl_url, gl_init_url
-
     conn = httplib.HTTPSConnection(gl_url)
     conn.request("GET", gl_init_url, headers=gl_headers)
     #get response from web server   
@@ -61,7 +59,6 @@ def login(username, password):
         content = content[3:]
         print_result(content)
         return
-
     params ={'username': username, 'password': password}
     try:
         conn = httplib.HTTPSConnection(gl_url)
@@ -80,7 +77,6 @@ def logout():
     """Logout based on httplib. 
     'POST' logout parameters to server.
     """
-    global gl_headers, gl_url, gl_logout_url
     try:
         conn = httplib.HTTPSConnection(gl_url)
         conn.request("POST", gl_logout_url, headers=gl_headers)
@@ -95,7 +91,6 @@ def status():
     If logined, print status (IP, time, location). 
     If not logined, print 'Not login!'
     """
-    global gl_headers, gl_url, gl_init_url
     try:
         conn = httplib.HTTPSConnection(gl_url)
         conn.request("GET", gl_init_url, headers=gl_headers)
@@ -120,10 +115,11 @@ if __name__ == '__main__':
         # if you didn't want to save username and password in this file
         # you can input username and password by standard input
         if 'your' in gl_username or 'your' in gl_password:
-           gl_username = raw_input("Username:")
-           # don't show my password on screen
-           gl_password = getpass.getpass("Password:")
-        login(gl_username, gl_password)
+            # reqire username and password from std input
+            username = raw_input("Username:")
+            # don't show my password on screen
+            password = getpass.getpass("Password:")
+        login(username, password)
     elif sys.argv[1] == 'logout':
         logout()
     elif sys.argv[1] == 'status':
