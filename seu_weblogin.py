@@ -114,6 +114,8 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'login':
         # if you didn't want to save username and password in this file
         # you can input username and password by standard input
+        username = gl_username
+        password = gl_password
         if 'your' in gl_username or 'your' in gl_password:
             # reqire username and password from std input
             username = raw_input("Username:")
