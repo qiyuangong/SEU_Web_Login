@@ -7,13 +7,19 @@ This program is a python implement for CLI (command-line interface) web login in
 
 ## Usage:
 	
-You need to fill your username and password first, otherwise you need to input thme in std input (recommanded for public server). 
+You need to fill your username and password first, or include them in command, otherwise you need to input thme in std input (recommanded for public server). 
 
-使用前，请替换用户名和密码，如不替换，程序会在运行时要求你输入（比较适合在公用服务器上使用）：
+使用前，请替换用户名和密码，或者在命令里面包含，否则，程序会在运行时要求你输入（比较适合在公用服务器上使用）：
 
 	# replace with your username and password
 	gl_username = 'your_username' 
 	gl_password = 'your_password' 
+	# or include them in command
+	python seu_weblogin.py login your_username your_password
+	# if not username or gl_username are included, this program will require them from std input 
+	python seu_weblogin.py login
+	username: your_username
+	password: your_password
 
 Then just excute it with params.
 

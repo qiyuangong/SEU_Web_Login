@@ -112,15 +112,20 @@ if __name__ == '__main__':
         print "No param is inputed. Please input params."
         print "Usage python %s [login | logout | status | help]" % sys.argv[0]
     elif sys.argv[1] == 'login':
-        # if you didn't want to save username and password in this file
-        # you can input username and password by standard input
-        username = gl_username
-        password = gl_password
-        if 'your' in gl_username or 'your' in gl_password:
-            # reqire username and password from std input
-            username = raw_input("Username:")
-            # don't show my password on screen
-            password = getpass.getpass("Password:")
+        try:
+            # for command "python seu_weblogin.py login username password"
+            username = sys.argv[2]
+            password = sys.argv[3]
+        except:
+            # if you didn't want to save username and password in this file
+            # you can input username and password by standard input
+            username = gl_username
+            password = gl_password
+            if 'your' in gl_username or 'your' in gl_password:
+                # reqire username and password from std input
+                username = raw_input("Username:")
+                # don't show my password on screen
+                password = getpass.getpass("Password:")
         login(username, password)
     elif sys.argv[1] == 'logout':
         logout()
