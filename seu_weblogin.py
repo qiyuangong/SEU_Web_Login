@@ -13,7 +13,7 @@ gl_headers = {
     'Content-Type': "application/json; charset=utf-8",
     'dataType': "json",
     'cache': False
-    }
+}
 gl_url = "w.seu.edu.cn"
 gl_init_url = "/portal/init.php"
 gl_login_url = "/portal/login.php"
@@ -30,8 +30,8 @@ def print_result(content):
             # decode utf-8 character
             print "Error:" + unicode(dresq["error"]).decode('unicode-escape')
         else:
-            #fuction eval will convert json to dict
-            #need to replace 'null' otherwise eval will return error
+            # fuction eval will convert json to dict
+            # need to replace 'null' otherwise eval will return error
             dresq = eval(content.replace('null', "'w.seu.edu.cn'").encode('utf-8'))
             # print username & IP address
             print "Username: " + dresq['login_username']
@@ -39,31 +39,31 @@ def print_result(content):
             print "Login Time: " + time.strftime('%H:%M:%S', time.gmtime(dresq['login_time']))
             print "Login Location: " + unicode(dresq['login_location']).decode('unicode-escape')
             print "Expire Time: " + unicode(dresq['login_expire']).decode('unicode-escape') + \
-                    ' (remain ' + unicode(dresq['login_remain']).decode('unicode-escape') + ' days)'
+                '(remain ' + unicode(dresq['login_remain']).decode('unicode-escape') + ' days)'
     except:
         print "Print error! Maybe something is wrong in UTF-8 encode and json decode"
 
 
 def login(username, password):
-    """Login fuction based on httplib. 
+    """Login fuction based on httplib.
     Check login status, if logined then print status (IP, time, location).
     If not logined, 'POST' your login parameters to server.
     """
     conn = httplib.HTTPSConnection(gl_url)
     conn.request("GET", gl_init_url, headers=gl_headers)
-    #get response from web server   
+    # get response from web server
     content = conn.getresponse().read()
-    # make sure if user is login 
-    if not 'notlogin' in content:
+    # make sure if user is login
+    if 'notlogin' not in content:
         print "Already login!"
         content = content[3:]
         print_result(content)
         return
-    params ={'username': username, 'password': password}
+    params = {'username': username, 'password': password}
     try:
         conn = httplib.HTTPSConnection(gl_url)
         conn.request("POST", gl_login_url, urllib.urlencode(params), headers=gl_headers)
-        #get response from web server
+        # get response from web server
         content = conn.getresponse().read()
         # remove useless header
         content = content[5:]
@@ -74,7 +74,7 @@ def login(username, password):
 
 
 def logout():
-    """Logout based on httplib. 
+    """Logout based on httplib.
     'POST' logout parameters to server.
     """
     try:
@@ -88,15 +88,15 @@ def logout():
 
 def status():
     """Print login status.
-    If logined, print status (IP, time, location). 
+    If logined, print status (IP, time, location).
     If not logined, print 'Not login!'
     """
     try:
         conn = httplib.HTTPSConnection(gl_url)
         conn.request("GET", gl_init_url, headers=gl_headers)
-        #get response from web server   
+        # get response from web server
         content = conn.getresponse().read()
-        # make sure if user is login 
+        # make sure if user is login
         if 'notlogin' in content:
             print "Not login!"
             return
