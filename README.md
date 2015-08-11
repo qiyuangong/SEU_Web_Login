@@ -12,11 +12,11 @@ You need to fill your username and password first, or include them in command, o
 使用前，请替换用户名和密码，或者在命令里面包含，否则，程序会在运行时要求你输入（比较适合在公用服务器上使用）：
 
 	# replace with your username and password
-	gl_username = 'your_username' 
-	gl_password = 'your_password' 
+	USERNAME = 'your_username' 
+	PASSWORD = 'your_password' 
 	# or include them in command
 	python seu_weblogin.py login your_username your_password
-	# if not username or gl_username are included, this program will require them from std input 
+	# if not username or USERNAME are included, this program will require them from std input 
 	python seu_weblogin.py login
 	username: your_username
 	password: your_password

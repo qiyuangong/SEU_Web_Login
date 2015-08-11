@@ -1,23 +1,26 @@
-#!/usr/bin/env python
+"""
+login and logout w.seu.edu.cn with Python
+"""
+
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 import urllib
 import httplib
-import json
 import sys
 import time
 import getpass
 
-gl_username = 'your_username'
-gl_password = 'your_password'
-gl_headers = {
+USERNAME = 'your_username'
+PASSWORD = 'your_password'
+HEADERS = {
     'Content-Type': "application/json; charset=utf-8",
     'dataType': "json",
     'cache': False
 }
-gl_url = "w.seu.edu.cn"
-gl_init_url = "/portal/init.php"
-gl_login_url = "/portal/login.php"
-gl_logout_url = "/portal/logout.php"
+ADDRESS = "w.seu.edu.cn"
+INIT_URL = "/portal/init.php"
+LOGIN_URL = "/portal/login.php"
+LOGOUT_URL = "/portal/logout.php"
 
 
 def print_result(content):
@@ -49,8 +52,8 @@ def login(username, password):
     Check login status, if logined then print status (IP, time, location).
     If not logined, 'POST' your login parameters to server.
     """
-    conn = httplib.HTTPSConnection(gl_url)
-    conn.request("GET", gl_init_url, headers=gl_headers)
+    conn = httplib.HTTPSConnection(ADDRESS)
+    conn.request("GET", INIT_URL, headers=HEADERS)
     # get response from web server
     content = conn.getresponse().read()
     # make sure if user is login
@@ -61,8 +64,8 @@ def login(username, password):
         return
     params = {'username': username, 'password': password}
     try:
-        conn = httplib.HTTPSConnection(gl_url)
-        conn.request("POST", gl_login_url, urllib.urlencode(params), headers=gl_headers)
+        conn = httplib.HTTPSConnection(ADDRESS)
+        conn.request("POST", LOGIN_URL, urllib.urlencode(params), headers=HEADERS)
         # get response from web server
         content = conn.getresponse().read()
         # remove useless header
@@ -78,8 +81,8 @@ def logout():
     'POST' logout parameters to server.
     """
     try:
-        conn = httplib.HTTPSConnection(gl_url)
-        conn.request("POST", gl_logout_url, headers=gl_headers)
+        conn = httplib.HTTPSConnection(ADDRESS)
+        conn.request("POST", LOGOUT_URL, headers=HEADERS)
         conn.close()
         print "Logout Sucess!!"
     except:
@@ -92,8 +95,8 @@ def status():
     If not logined, print 'Not login!'
     """
     try:
-        conn = httplib.HTTPSConnection(gl_url)
-        conn.request("GET", gl_init_url, headers=gl_headers)
+        conn = httplib.HTTPSConnection(ADDRESS)
+        conn.request("GET", INIT_URL, headers=HEADERS)
         # get response from web server
         content = conn.getresponse().read()
         # make sure if user is login
@@ -114,19 +117,19 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'login':
         try:
             # for command "python seu_weblogin.py login username password"
-            username = sys.argv[2]
-            password = sys.argv[3]
-        except:
+            INPUT_USERNAME = sys.argv[2]
+            INPUT_PASSWORD = sys.argv[3]
+        except IndexError:
             # if you didn't want to save username and password in this file
             # you can input username and password by standard input
-            username = gl_username
-            password = gl_password
-            if 'your' in gl_username or 'your' in gl_password:
+            INPUT_USERNAME = USERNAME
+            INPUT_PASSWORD = PASSWORD
+            if 'your' in USERNAME or 'your' in PASSWORD:
                 # reqire username and password from std input
-                username = raw_input("Username:")
+                INPUT_USERNAME = raw_input("Username:")
                 # don't show my password on screen
-                password = getpass.getpass("Password:")
-        login(username, password)
+                INPUT_PASSWORD = getpass.getpass("Password:")
+        login(INPUT_USERNAME, INPUT_PASSWORD)
     elif sys.argv[1] == 'logout':
         logout()
     elif sys.argv[1] == 'status':
